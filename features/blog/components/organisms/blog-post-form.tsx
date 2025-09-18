@@ -26,7 +26,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { X, Plus } from 'lucide-react';
 import { blogPostSchema } from '../../config/blog.schema';
-import { BlogPost, BlogCategory, BlogTag } from '../../config/blog.types';
+import { BlogPost } from '../../config/blog.types';
 import { useCreateBlogPost, useUpdateBlogPost } from '../../hooks/use-blog-posts';
 import { useBlogCategories } from '../../hooks/use-blog-categories';
 import { useToast } from '@/shared/hooks/use-toast';
@@ -253,7 +253,7 @@ export function BlogPostForm({ post, onSuccess, onCancel }: BlogPostFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">No category</SelectItem>
+                        <SelectItem value="all">No category</SelectItem>
                         {categoriesData?.categories.map((category) => (
                           <SelectItem key={category.id} value={category.id}>
                             {category.name}

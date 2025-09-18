@@ -1,3 +1,17 @@
+// Generate a slug from a string (e.g. for blog category or post)
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize('NFKD')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/&/g, '-and-') // Replace & with 'and'
+    .replace(/[\u0300-\u036f]/g, '') // Remove accents
+    .replace(/[^a-z0-9-]/g, '') // Remove all non-alphanumeric except -
+    .replace(/--+/g, '-') // Replace multiple - with single -
+    .replace(/^-+|-+$/g, ''); // Trim - from start/end
+}
 import { clsx, type ClassValue } from 'clsx';
 
 import confetti from 'canvas-confetti';
