@@ -186,7 +186,7 @@ export function CategoryManagement() {
                         key={category.id}
                         className={`cursor-pointer ${selectedCategory === category.id ? 'bg-muted' : ''}`}
                         onClick={() => setSelectedCategory(
-                          selectedCategory === category.id ? null : category.id
+                          selectedCategory === category.id ? null : (category.id || null)
                         )}
                       >
                         <TableCell>

@@ -255,7 +255,7 @@ export function BlogPostForm({ post, onSuccess, onCancel }: BlogPostFormProps) {
                       <SelectContent>
                         <SelectItem value="all">No category</SelectItem>
                         {categoriesData?.categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
+                          <SelectItem key={category.id} value={category.id || ''}>
                             {category.name}
                           </SelectItem>
                         ))}

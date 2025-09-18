@@ -42,7 +42,13 @@ export class BlogService {
       await this.associatePostTags(post.id, data.tagIds);
     }
 
-    return post;
+    return {
+      ...post,
+      excerpt: post.excerpt || undefined,
+      featuredImage: post.featuredImage || undefined,
+      categoryId: post.categoryId || undefined,
+      publishedAt: post.publishedAt || undefined,
+    } as BlogPost;
   }
 
   async getPostById(id: string): Promise<BlogPostWithRelations | null> {
@@ -71,8 +77,18 @@ export class BlogService {
 
     return {
       ...post.post,
-      category: post.category || undefined,
-      author: post.author,
+      excerpt: post.post.excerpt || undefined,
+      featuredImage: post.post.featuredImage || undefined,
+      categoryId: post.post.categoryId || undefined,
+      publishedAt: post.post.publishedAt || undefined,
+      category: post.category ? {
+        ...post.category,
+        description: post.category.description || undefined
+      } : undefined,
+      author: post.author ? {
+        ...post.author,
+        image: post.author.image || undefined
+      } : undefined,
       tags,
       commentsCount,
     };
@@ -145,8 +161,18 @@ export class BlogService {
         
         return {
           ...item.post,
-          category: item.category || undefined,
-          author: item.author,
+          excerpt: item.post.excerpt || undefined,
+          featuredImage: item.post.featuredImage || undefined,
+          categoryId: item.post.categoryId || undefined,
+          publishedAt: item.post.publishedAt || undefined,
+          category: item.category ? {
+            ...item.category,
+            description: item.category.description || undefined
+          } : undefined,
+          author: item.author ? {
+            ...item.author,
+            image: item.author.image || undefined
+          } : undefined,
           tags,
           commentsCount,
         };
@@ -180,28 +206,38 @@ export class BlogService {
       await this.updatePostTags(id, data.tagIds);
     }
 
-    return post || null;
+    return post ? {
+      ...post,
+      excerpt: post.excerpt || undefined,
+      featuredImage: post.featuredImage || undefined,
+      categoryId: post.categoryId || undefined,
+      publishedAt: post.publishedAt || undefined,
+    } as BlogPost : null;
   }
 
   async deletePost(id: string): Promise<boolean> {
     const result = await db
       .delete(blogPosts)
-      .where(eq(blogPosts.id, id));
+      .where(eq(blogPosts.id, id))
+      .returning({ id: blogPosts.id });
     
-    return result.rowCount > 0;
+    return result.length > 0;
   }
 
   // Categories
-  async createCategory(data: Omit<BlogCategory, 'id'>): Promise<BlogCategory> {
+  async createCategory(data: { name: string; description?: string; slug?: string }): Promise<BlogCategory> {
     const [category] = await db
       .insert(blogCategories)
       .values({
         ...data,
-        slug: this.generateSlug(data.name),
+        slug: data.slug || this.generateSlug(data.name),
       })
       .returning();
     
-    return category;
+    return {
+      ...category,
+      description: category.description || undefined,
+    } as BlogCategory;
   }
 
   async getCategories(): Promise<BlogCategoryWithStats[]> {
@@ -216,6 +252,7 @@ export class BlogService {
         
         return {
           ...category,
+          description: category.description || undefined,
           postsCount: postsCount || 0,
         };
       })
@@ -238,6 +275,7 @@ export class BlogService {
 
     return {
       ...category,
+      description: category.description || undefined,
       postsCount: postsCount || 0,
     };
   }
@@ -405,7 +443,9 @@ export class BlogService {
       .leftJoin(blogTags, eq(blogPostTags.tagId, blogTags.id))
       .where(eq(blogPostTags.postId, postId));
 
-    return result.map(item => item.tag).filter(Boolean);
+    return result
+      .map(item => item.tag)
+      .filter((tag): tag is NonNullable<typeof tag> => tag !== null);
   }
 
   private async getPostCommentsCount(postId: string): Promise<number> {
