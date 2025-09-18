@@ -44,7 +44,7 @@ export const blogTagSchema = z.object({
 export const createBlogPostSchema = blogPostSchema.omit({ id: true });
 export const updateBlogPostSchema = blogPostSchema.partial().required({ id: true });
 
-export const createBlogCategorySchema = blogCategorySchema.omit({ id: true });
+export const createBlogCategorySchema = blogCategorySchema.omit({ id: true }).partial({ slug: true });
 export const updateBlogCategorySchema = blogCategorySchema.partial().required({ id: true });
 
 export const createBlogTagSchema = blogTagSchema.omit({ id: true });

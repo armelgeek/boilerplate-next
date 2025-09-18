@@ -14,6 +14,9 @@ export type BlogTag = z.infer<typeof blogTagSchema>;
 
 // Extended types with relationships
 export type BlogPostWithRelations = BlogPost & {
+  createdAt?: Date;
+  updatedAt?: Date;
+  viewCount?: number;
   category?: BlogCategory;
   author?: {
     id: string;

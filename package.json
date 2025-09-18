@@ -9,6 +9,7 @@
     "lint": "next lint",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "tsx ./drizzle/migrate.ts",
+    "db:push": "npx drizzle-kit push",
     "db:studio": "npx drizzle-kit studio",
     "stripe:listen": "bun run stripe listen --forward-to http://localhost:3000/api/stripe/webhook"
   },

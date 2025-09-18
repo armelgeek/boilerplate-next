@@ -169,7 +169,7 @@ export function BlogPostsTable() {
               <SelectContent>
                 <SelectItem value="all">All categories</SelectItem>
                 {categoriesData?.categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
+                  <SelectItem key={category.id} value={category.id || ''}>
                     {category.name}
                   </SelectItem>
                 ))}
@@ -233,7 +233,7 @@ export function BlogPostsTable() {
                         {post.author?.name || 'Unknown'}
                       </TableCell>
                       <TableCell>
-                        {formatDateTime(post.createdAt).dateOnly}
+                        {post.createdAt ? formatDateTime(post.createdAt).dateOnly : 'N/A'}
                       </TableCell>
                       <TableCell>
                         {post.viewCount || 0}
@@ -249,7 +249,7 @@ export function BlogPostsTable() {
                           <Button 
                             variant="ghost" 
                             size="sm"
-                            onClick={() => handleDeletePost(post.id, post.title)}
+                            onClick={() => handleDeletePost(post.id || '', post.title)}
                             disabled={deletePostMutation.isPending}
                           >
                             <Trash2 className="w-4 h-4" />

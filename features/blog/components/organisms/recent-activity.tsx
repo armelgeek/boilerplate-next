@@ -34,7 +34,7 @@ export function RecentActivity({ statistics }: RecentActivityProps) {
                       {post.status}
                     </span>
                     <span className="text-muted-foreground text-xs">
-                      {formatDateTime(post.createdAt).dateOnly}
+                      {post.createdAt ? formatDateTime(post.createdAt).dateOnly : 'N/A'}
                     </span>
                   </div>
                 </div>

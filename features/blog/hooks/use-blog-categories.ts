@@ -4,7 +4,11 @@ import {
   BlogCategoriesResponse, 
   BlogCategory 
 } from '../config/blog.types';
+import { createBlogCategorySchema } from '../config/blog.schema';
+import { z } from 'zod';
 import { BLOG_API_ENDPOINTS } from '../config/blog.constants';
+
+type CreateBlogCategoryData = z.infer<typeof createBlogCategorySchema>;
 
 // Hook for fetching all blog categories
 export function useBlogCategories() {
@@ -41,7 +45,7 @@ export function useCreateBlogCategory() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: Omit<BlogCategory, 'id'>) => {
+    mutationFn: async (data: CreateBlogCategoryData) => {
       const response = await fetch(BLOG_API_ENDPOINTS.categories.create, {
         method: 'POST',
         headers: {

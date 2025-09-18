@@ -40,7 +40,7 @@ export const blogPosts = pgTable('blog_posts', {
 });
 
 // Blog comments table
-export const blogComments = pgTable('blog_comments', {
+export const blogComments: any = pgTable('blog_comments', {
   id: text('id')
     .primaryKey()
     .default(sql`gen_random_uuid()`),
@@ -51,8 +51,7 @@ export const blogComments = pgTable('blog_comments', {
   authorId: text('author_id')
     .notNull()
     .references(() => users.id),
-  parentId: text('parent_id')
-    .references(() => blogComments.id), // For threaded comments
+  parentId: text('parent_id'), // For threaded comments - self-reference added later
   isApproved: boolean('is_approved').notNull().default(false),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
