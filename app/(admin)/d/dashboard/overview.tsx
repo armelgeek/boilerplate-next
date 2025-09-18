@@ -1,22 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import React from 'react';
-import { BlogDashboard } from '@/features/blog/components/organisms/blog-dashboard';
+import { EnhancedBlogDashboard } from '@/features/blog/components/organisms/enhanced-blog-dashboard';
 
 export default async function Overview() {
 
     return (
-        <div className='space-y-4'>
-        
-            <div className='space-y-4'>
-                <div className='flex flex-col space-y-2'>
-                    <h2 className="font-semibold text-xl tracking-tight">Blog Overview</h2>
-                    <p className="text-muted-foreground text-sm">
-                        Monitor your blog content and engagement metrics.
-                    </p>
-                </div>
-                <BlogDashboard />
-            </div>
+        <div className='space-y-6'>
+            {/* Enhanced Blog Overview */}
+            <EnhancedBlogDashboard />
 
+            {/* Additional Dashboard Sections */}
             <div className='gap-4 grid md:grid-cols-2 lg:grid-cols-7'>
                 <Card className='col-span-4 shadow-sm hover:shadow-md transition-shadow duration-200'>
                     <CardHeader>
@@ -24,7 +17,22 @@ export default async function Overview() {
                         <CardDescription>Monthly revenue over the last 6 months</CardDescription>
                     </CardHeader>
                     <CardContent>
-                     
+                        {/* Revenue chart would go here */}
+                        <div className="flex items-center justify-center h-32 text-muted-foreground">
+                            Revenue chart coming soon...
+                        </div>
+                    </CardContent>
+                </Card>
+                
+                <Card className='col-span-3 shadow-sm hover:shadow-md transition-shadow duration-200'>
+                    <CardHeader>
+                        <CardTitle>Quick Stats</CardTitle>
+                        <CardDescription>System overview metrics</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex items-center justify-center h-32 text-muted-foreground">
+                            Additional metrics coming soon...
+                        </div>
                     </CardContent>
                 </Card>
             </div>

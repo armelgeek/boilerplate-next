@@ -280,6 +280,37 @@ export class BlogService {
     };
   }
 
+  async updateCategory(id: string, data: Partial<BlogCategory>): Promise<BlogCategory | null> {
+    const updateData: any = { ...data };
+    
+    // Update slug if name changed
+    if (data.name) {
+      updateData.slug = this.generateSlug(data.name);
+    }
+
+    updateData.updatedAt = new Date();
+
+    const [category] = await db
+      .update(blogCategories)
+      .set(updateData)
+      .where(eq(blogCategories.id, id))
+      .returning();
+
+    return category ? {
+      ...category,
+      description: category.description || undefined,
+    } as BlogCategory : null;
+  }
+
+  async deleteCategory(id: string): Promise<boolean> {
+    const result = await db
+      .delete(blogCategories)
+      .where(eq(blogCategories.id, id))
+      .returning({ id: blogCategories.id });
+    
+    return result.length > 0;
+  }
+
   // Comments
   async createComment(data: Omit<BlogComment, 'id'>): Promise<BlogComment> {
     const [comment] = await db
