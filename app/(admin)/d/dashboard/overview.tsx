@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import React from 'react';
 import { BadgeDollarSign, Barcode, Users } from 'lucide-react';
+import { BlogDashboard } from '@/features/blog/components/organisms/blog-dashboard';
 
 export default async function Overview() {
 
@@ -52,6 +53,17 @@ export default async function Overview() {
                         <p className="mt-1 text-muted-foreground text-xs">Items in your catalog</p>
                     </CardContent>
                 </Card>
+            </div>
+
+            {/* Blog Statistics Section */}
+            <div className='space-y-4'>
+                <div className='flex flex-col space-y-2'>
+                    <h2 className="font-semibold text-xl tracking-tight">Blog Overview</h2>
+                    <p className="text-muted-foreground text-sm">
+                        Monitor your blog content and engagement metrics.
+                    </p>
+                </div>
+                <BlogDashboard />
             </div>
 
             <div className='gap-4 grid md:grid-cols-2 lg:grid-cols-7'>
