@@ -35,7 +35,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Plus, Edit, Trash2, BookOpen, Search, Filter, ArrowUpDown, Users, FileText } from 'lucide-react';
-import { useBlogCategories, useCreateBlogCategory, useDeleteBlogCategory } from '../../hooks/use-blog-categories';
+import { useBlogCategories, useCreateBlogCategory, useDeleteBlogCategory, useUpdateBlogCategory } from '../../hooks/use-blog-categories';
 import { useBlogPosts } from '../../hooks/use-blog-posts';
 import { useToast } from '@/shared/hooks/use-toast';
 import { BlogCategory } from '../../config/blog.types';
@@ -49,10 +49,14 @@ export function EnhancedCategoryManagement() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<BlogCategory | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editDescription, setEditDescription] = useState('');
 
   const { data: categoriesData, isLoading } = useBlogCategories();
   const createCategoryMutation = useCreateBlogCategory();
   const deleteCategoryMutation = useDeleteBlogCategory();
+  const updateCategoryMutation = useUpdateBlogCategory();
 
   // Get posts for selected category
   const { data: categoryPostsData } = useBlogPosts(
@@ -117,6 +121,41 @@ export function EnhancedCategoryManagement() {
       toast({
         title: 'Error',
         description: 'Failed to delete category',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleEditCategory = (category: BlogCategory) => {
+    setEditingCategory(category);
+    setEditName(category.name);
+    setEditDescription(category.description || '');
+  };
+
+  const handleUpdateCategory = async () => {
+    if (!editingCategory || !editName.trim()) return;
+
+    try {
+      await updateCategoryMutation.mutateAsync({
+        id: editingCategory.id || '',
+        data: {
+          name: editName.trim(),
+          description: editDescription.trim() || undefined,
+        }
+      });
+      
+      setEditingCategory(null);
+      setEditName('');
+      setEditDescription('');
+      
+      toast({
+        title: 'Success! ✨',
+        description: 'Category updated successfully',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update category',
         variant: 'destructive',
       });
     }
@@ -308,9 +347,68 @@ export function EnhancedCategoryManagement() {
                       </TableCell>
                       <TableCell onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center space-x-1">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Edit className="w-4 h-4" />
-                          </Button>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="h-8 w-8 p-0"
+                                onClick={() => handleEditCategory(category)}
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center">
+                                  <Edit className="mr-2 w-5 h-5" />
+                                  Edit Category
+                                </DialogTitle>
+                                <DialogDescription>
+                                  Update the category information
+                                </DialogDescription>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="space-y-2">
+                                  <label htmlFor="edit-name" className="text-sm font-medium">
+                                    Category Name *
+                                  </label>
+                                  <Input
+                                    id="edit-name"
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    className="w-full"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <label htmlFor="edit-description" className="text-sm font-medium">
+                                    Description
+                                  </label>
+                                  <Textarea
+                                    id="edit-description"
+                                    value={editDescription}
+                                    onChange={(e) => setEditDescription(e.target.value)}
+                                    className="min-h-[80px] resize-none"
+                                  />
+                                </div>
+                              </div>
+                              <DialogFooter>
+                                <Button 
+                                  variant="outline" 
+                                  onClick={() => setEditingCategory(null)}
+                                  disabled={updateCategoryMutation.isPending}
+                                >
+                                  Cancel
+                                </Button>
+                                <Button 
+                                  onClick={handleUpdateCategory}
+                                  disabled={updateCategoryMutation.isPending || !editName.trim()}
+                                >
+                                  {updateCategoryMutation.isPending ? 'Updating...' : 'Update Category'}
+                                </Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button 

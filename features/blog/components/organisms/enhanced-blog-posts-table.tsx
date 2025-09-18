@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -54,6 +55,7 @@ export function EnhancedBlogPostsTable() {
   const [sort, setSort] = useState<BlogPostSort>({ field: 'createdAt', direction: 'desc' });
   const [pagination, setPagination] = useState<PaginationParams>({ page: 1, limit: 10 });
   const [search, setSearch] = useState('');
+  const [selectedPosts, setSelectedPosts] = useState<string[]>([]);
 
   const { data: postsData, isLoading, error } = useBlogPosts(filter, sort, pagination);
   const { data: categoriesData } = useBlogCategories();
