@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { BlogPostsTable } from '@/features/blog/components/organisms/blog-posts-table';
+import { EnhancedBlogPostsTable } from '@/features/blog/components/organisms/enhanced-blog-posts-table';
 
 export const metadata: Metadata = {
   title: 'Blog Management',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <div className="container mx-auto py-6">
-      <BlogPostsTable />
+      <EnhancedBlogPostsTable />
     </div>
   );
 }

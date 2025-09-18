@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CategoryManagement } from '@/features/blog/components/organisms/category-management';
+import { EnhancedCategoryManagement } from '@/features/blog/components/organisms/enhanced-category-management';
 
 export const metadata: Metadata = {
   title: 'Category Management',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function CategoriesPage() {
   return (
     <div className="container mx-auto py-6">
-      <CategoryManagement />
+      <EnhancedCategoryManagement />
     </div>
   );
 }
