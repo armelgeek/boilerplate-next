@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import React from 'react';
-import { BadgeDollarSign, Barcode, Users } from 'lucide-react';
 import { BlogDashboard } from '@/features/blog/components/organisms/blog-dashboard';
 
 export default async function Overview() {
