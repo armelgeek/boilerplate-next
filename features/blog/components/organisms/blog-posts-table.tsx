@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { useState } from 'react';
 import { 
   Table,
@@ -20,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Eye, Edit, Trash2, Plus, Search } from 'lucide-react';
+import { Eye, Edit, Trash2, Plus, Search, Folder } from 'lucide-react';
 import { useBlogPosts, useDeleteBlogPost } from '../../hooks/use-blog-posts';
 import { useBlogCategories } from '../../hooks/use-blog-categories';
 import { BlogPostFilter, BlogPostSort, PaginationParams } from '../../config/blog.types';
@@ -112,10 +114,20 @@ export function BlogPostsTable() {
             Manage your blog content
           </p>
         </div>
-        <Button>
-          <Plus className="mr-2 w-4 h-4" />
-          New Post
-        </Button>
+        <div className="flex gap-2">
+          <Button asChild variant="outline">
+            <Link href="/d/blog/categories">
+              <Folder className="mr-2 w-4 h-4" />
+              Categories
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link href="/d/blog/new">
+              <Plus className="mr-2 w-4 h-4" />
+              New Post
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
